@@ -2,12 +2,16 @@
 #include <fstream>
 #define MAXSIZE 128
 
-void acumular(float& num, float valor) {
-    num += valor;
+void acumular(float& a, float b) {
+    a += b;
 }
 
 int main(int argc, char** argv)
 {
+
+    float valor = 0;
+    int num_valores= 0;
+
     std::cout << "Leyendo archivo" << std::endl;
 
     std::ifstream file;
@@ -20,27 +24,18 @@ int main(int argc, char** argv)
 
         while (!file.eof()) {
             file.getline(buffer, MAXSIZE);
-            std::cout << buffer << std::endl;
+            acumular(valor, atof(buffer));
+
+            std::cout << "Valor acumulado:" << valor << std::endl;
+            num_valores++;
         }
+        valor /= num_valores;
+
+        std::ofstream file_o("datos.txt", std::ofstream::app);
+        file_o << "\npromedio: " << valor << std::endl;
     }
 
     else {
         std::cout << "no se encuentra el archivo\n";
     }
-
-    if (argc <= 1) return 0;
-
-    float suma = 0;
-    std::cout << "argc:" << argc << std::endl;
-
-    for (int i = 1; i < argc; i++) {
-        std::cout << argv[i] << std::endl;
-        acumular(suma, atoi(argv[i]));
-    }
-
-    float promedio = suma / (argc - 1);
-    std::cout << "Promedio" << promedio << std::endl;
-    return 0;
-
-
 }
